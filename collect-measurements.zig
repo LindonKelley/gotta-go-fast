@@ -394,7 +394,7 @@ fn runBenchmarks(
         // Compile first to ensure that it doesn't affect the rusage stats
         var compile_argv = std.ArrayList([]const u8).init(gpa);
         defer compile_argv.deinit();
-        try appendBenchBuildArgs(&compile_argv, zig_exe, abs_main_path, "../../bench.zig");
+        try appendBenchBuildArgs(gpa, &compile_argv, zig_exe, abs_main_path, "../../bench.zig");
 
         const compile_stdout = try execCapture(gpa, compile_argv.items, .{ .cwd = bench_cwd });
         defer gpa.free(compile_stdout);
@@ -440,19 +440,29 @@ fn runBenchmarks(
 }
 
 fn appendBenchBuildArgs(
+    gpa: std.mem.Allocator,
     list: *std.ArrayList([]const u8),
     zig_exe: []const u8,
     main_path: []const u8,
     bench_zig: []const u8,
 ) !void {
     try list.ensureUnusedCapacity(20);
+
+    const prepend = "app::";
+    // TODO I couldn't figure out how to use std.mem.concat with strings :(
+    var mod_concat = std.ArrayList(u8).init(gpa);
+    try mod_concat.ensureTotalCapacity(prepend.len + main_path.len);
+    mod_concat.appendSliceAssumeCapacity(prepend);
+    mod_concat.appendSliceAssumeCapacity(main_path);
+    const mod = try mod_concat.toOwnedSlice();
+
     list.appendSliceAssumeCapacity(&[_][]const u8{
         zig_exe,           "build-exe",
         "--main-pkg-path", "../..",
-        "--pkg-begin",     "app",
-        main_path,         "--pkg-end",
+        "--mod",           mod,
         "-O",              "ReleaseFast",
-        "--enable-cache",  bench_zig,
+        // TODO unrecognized parameter: '--enable-cache'
+        bench_zig,
     });
 }
 
