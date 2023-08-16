@@ -78,43 +78,43 @@ fn jsonToRecord(
         .commit_timestamp = commit_timestamp,
         .zig_version = zig_version,
     };
-    if (mo == .String) {
-        record.error_message = try arena.dupe(u8, mo.String);
+    if (mo == .string) {
+        record.error_message = try arena.dupe(u8, mo.string);
     } else {
-        record.samples_taken = @intCast(u64, mo.Object.get("samples_taken").?.Integer);
-        record.wall_time_median = @intCast(u64, mo.Object.get("wall_time").?.Object.get("median").?.Integer);
-        record.wall_time_mean = @intCast(u64, mo.Object.get("wall_time").?.Object.get("mean").?.Integer);
-        record.wall_time_min = @intCast(u64, mo.Object.get("wall_time").?.Object.get("min").?.Integer);
-        record.wall_time_max = @intCast(u64, mo.Object.get("wall_time").?.Object.get("max").?.Integer);
-        record.utime_median = @intCast(u64, mo.Object.get("utime").?.Object.get("median").?.Integer);
-        record.utime_mean = @intCast(u64, mo.Object.get("utime").?.Object.get("mean").?.Integer);
-        record.utime_min = @intCast(u64, mo.Object.get("utime").?.Object.get("min").?.Integer);
-        record.utime_max = @intCast(u64, mo.Object.get("utime").?.Object.get("max").?.Integer);
-        record.stime_median = @intCast(u64, mo.Object.get("stime").?.Object.get("median").?.Integer);
-        record.stime_mean = @intCast(u64, mo.Object.get("stime").?.Object.get("mean").?.Integer);
-        record.stime_min = @intCast(u64, mo.Object.get("stime").?.Object.get("min").?.Integer);
-        record.stime_max = @intCast(u64, mo.Object.get("stime").?.Object.get("max").?.Integer);
-        record.cpu_cycles_median = @intCast(u64, mo.Object.get("cpu_cycles").?.Object.get("median").?.Integer);
-        record.cpu_cycles_mean = @intCast(u64, mo.Object.get("cpu_cycles").?.Object.get("mean").?.Integer);
-        record.cpu_cycles_min = @intCast(u64, mo.Object.get("cpu_cycles").?.Object.get("min").?.Integer);
-        record.cpu_cycles_max = @intCast(u64, mo.Object.get("cpu_cycles").?.Object.get("max").?.Integer);
-        record.instructions_median = @intCast(u64, mo.Object.get("instructions").?.Object.get("median").?.Integer);
-        record.instructions_mean = @intCast(u64, mo.Object.get("instructions").?.Object.get("mean").?.Integer);
-        record.instructions_min = @intCast(u64, mo.Object.get("instructions").?.Object.get("min").?.Integer);
-        record.instructions_max = @intCast(u64, mo.Object.get("instructions").?.Object.get("max").?.Integer);
-        record.cache_references_median = @intCast(u64, mo.Object.get("cache_references").?.Object.get("median").?.Integer);
-        record.cache_references_mean = @intCast(u64, mo.Object.get("cache_references").?.Object.get("mean").?.Integer);
-        record.cache_references_min = @intCast(u64, mo.Object.get("cache_references").?.Object.get("min").?.Integer);
-        record.cache_references_max = @intCast(u64, mo.Object.get("cache_references").?.Object.get("max").?.Integer);
-        record.cache_misses_median = @intCast(u64, mo.Object.get("cache_misses").?.Object.get("median").?.Integer);
-        record.cache_misses_mean = @intCast(u64, mo.Object.get("cache_misses").?.Object.get("mean").?.Integer);
-        record.cache_misses_min = @intCast(u64, mo.Object.get("cache_misses").?.Object.get("min").?.Integer);
-        record.cache_misses_max = @intCast(u64, mo.Object.get("cache_misses").?.Object.get("max").?.Integer);
-        record.branch_misses_median = @intCast(u64, mo.Object.get("branch_misses").?.Object.get("median").?.Integer);
-        record.branch_misses_mean = @intCast(u64, mo.Object.get("branch_misses").?.Object.get("mean").?.Integer);
-        record.branch_misses_min = @intCast(u64, mo.Object.get("branch_misses").?.Object.get("min").?.Integer);
-        record.branch_misses_max = @intCast(u64, mo.Object.get("branch_misses").?.Object.get("max").?.Integer);
-        record.maxrss = @intCast(u64, mo.Object.get("maxrss").?.Integer);
+        record.samples_taken = @intCast(mo.object.get("samples_taken").?.integer);
+        record.wall_time_median = @intCast(mo.object.get("wall_time").?.object.get("median").?.integer);
+        record.wall_time_mean = @intCast(mo.object.get("wall_time").?.object.get("mean").?.integer);
+        record.wall_time_min = @intCast(mo.object.get("wall_time").?.object.get("min").?.integer);
+        record.wall_time_max = @intCast(mo.object.get("wall_time").?.object.get("max").?.integer);
+        record.utime_median = @intCast(mo.object.get("utime").?.object.get("median").?.integer);
+        record.utime_mean = @intCast(mo.object.get("utime").?.object.get("mean").?.integer);
+        record.utime_min = @intCast(mo.object.get("utime").?.object.get("min").?.integer);
+        record.utime_max = @intCast(mo.object.get("utime").?.object.get("max").?.integer);
+        record.stime_median = @intCast(mo.object.get("stime").?.object.get("median").?.integer);
+        record.stime_mean = @intCast(mo.object.get("stime").?.object.get("mean").?.integer);
+        record.stime_min = @intCast(mo.object.get("stime").?.object.get("min").?.integer);
+        record.stime_max = @intCast(mo.object.get("stime").?.object.get("max").?.integer);
+        record.cpu_cycles_median = @intCast(mo.object.get("cpu_cycles").?.object.get("median").?.integer);
+        record.cpu_cycles_mean = @intCast(mo.object.get("cpu_cycles").?.object.get("mean").?.integer);
+        record.cpu_cycles_min = @intCast(mo.object.get("cpu_cycles").?.object.get("min").?.integer);
+        record.cpu_cycles_max = @intCast(mo.object.get("cpu_cycles").?.object.get("max").?.integer);
+        record.instructions_median = @intCast(mo.object.get("instructions").?.object.get("median").?.integer);
+        record.instructions_mean = @intCast(mo.object.get("instructions").?.object.get("mean").?.integer);
+        record.instructions_min = @intCast(mo.object.get("instructions").?.object.get("min").?.integer);
+        record.instructions_max = @intCast(mo.object.get("instructions").?.object.get("max").?.integer);
+        record.cache_references_median = @intCast(mo.object.get("cache_references").?.object.get("median").?.integer);
+        record.cache_references_mean = @intCast(mo.object.get("cache_references").?.object.get("mean").?.integer);
+        record.cache_references_min = @intCast(mo.object.get("cache_references").?.object.get("min").?.integer);
+        record.cache_references_max = @intCast(mo.object.get("cache_references").?.object.get("max").?.integer);
+        record.cache_misses_median = @intCast(mo.object.get("cache_misses").?.object.get("median").?.integer);
+        record.cache_misses_mean = @intCast(mo.object.get("cache_misses").?.object.get("mean").?.integer);
+        record.cache_misses_min = @intCast(mo.object.get("cache_misses").?.object.get("min").?.integer);
+        record.cache_misses_max = @intCast(mo.object.get("cache_misses").?.object.get("max").?.integer);
+        record.branch_misses_median = @intCast(mo.object.get("branch_misses").?.object.get("median").?.integer);
+        record.branch_misses_mean = @intCast(mo.object.get("branch_misses").?.object.get("mean").?.integer);
+        record.branch_misses_min = @intCast(mo.object.get("branch_misses").?.object.get("min").?.integer);
+        record.branch_misses_max = @intCast(mo.object.get("branch_misses").?.object.get("max").?.integer);
+        record.maxrss = @intCast(mo.object.get("maxrss").?.integer);
     }
 
     return record;
@@ -194,7 +194,7 @@ pub fn main() !void {
                 field_indexes[csv_index] = field_index;
                 seen_fields[field_index] = true;
             }
-            inline for (@typeInfo(Record).Struct.fields) |field, i| {
+            inline for (@typeInfo(Record).Struct.fields, 0..) |field, i| {
                 if (!seen_fields[i]) {
                     std.debug.print("missing CSV field: {s}", .{field.name});
                     std.process.exit(1);
@@ -232,11 +232,12 @@ pub fn main() !void {
         }
     }
 
-    var manifest_parser = json.Parser.init(gpa, false);
     const manifest_text = try fs.cwd().readFileAlloc(gpa, "benchmarks/manifest.json", 3 * 1024 * 1024);
-    const manifest_tree = try manifest_parser.parse(manifest_text);
+    const manifest_tree = try json.parseFromSlice(json.Value, gpa, manifest_text, .{});
+    // TODO uncertain if this is needed, wasn't here before
+    defer manifest_tree.deinit();
 
-    runBenchmarks(gpa, arena, &records, &commit_table, manifest_tree.root, zig_exe, commit, zig_version, commit_timestamp) catch |err| {
+    runBenchmarks(gpa, arena, &records, &commit_table, manifest_tree.value, zig_exe, commit, zig_version, commit_timestamp) catch |err| {
         std.debug.print("error running benchmarks: {s}\n", .{@errorName(err)});
     };
 
@@ -247,7 +248,7 @@ pub fn main() !void {
         defer baf.destroy();
 
         const out = baf.writer();
-        inline for (@typeInfo(Record).Struct.fields) |field, i| {
+        inline for (@typeInfo(Record).Struct.fields, 0..) |field, i| {
             if (i != 0) {
                 try out.writeAll(comma);
             }
@@ -264,7 +265,7 @@ pub fn main() !void {
 }
 
 fn fieldIndex(comptime T: type, name: []const u8) ?usize {
-    inline for (@typeInfo(T).Struct.fields) |field, i| {
+    inline for (@typeInfo(T).Struct.fields, 0..) |field, i| {
         if (std.mem.eql(u8, field.name, name))
             return i;
     }
@@ -272,9 +273,9 @@ fn fieldIndex(comptime T: type, name: []const u8) ?usize {
 }
 
 fn setRecordField(arena: std.mem.Allocator, record: *Record, data: []const u8, index: usize) void {
-    inline for (@typeInfo(Record).Struct.fields) |field, i| {
+    inline for (@typeInfo(Record).Struct.fields, 0..) |field, i| {
         if (i == index) {
-            setRecordFieldT(arena, field.field_type, &@field(record, field.name), data);
+            setRecordFieldT(arena, field.type, &@field(record, field.name), data);
             return;
         }
     }
@@ -310,7 +311,7 @@ fn setRecordFieldT(arena: std.mem.Allocator, comptime T: type, ptr: *T, data: []
 }
 
 fn writeCSVRecord(out: anytype, record: Record) !void {
-    inline for (@typeInfo(Record).Struct.fields) |field, i| {
+    inline for (@typeInfo(Record).Struct.fields, 0..) |field, i| {
         if (i != 0) {
             try out.writeAll(comma);
         }
@@ -364,18 +365,18 @@ fn runBenchmarks(
     zig_version: []const u8,
     commit_timestamp: u64,
 ) !void {
-    try records.ensureUnusedCapacity(manifest.Object.count() * 2);
+    try records.ensureUnusedCapacity(manifest.object.count() * 2);
 
-    const timestamp = @intCast(u64, std.time.timestamp());
+    const timestamp = @as(u64, @intCast(std.time.timestamp()));
 
     // cd benchmarks/self-hosted-parser
     // zig build-exe --main-pkg-path ../.. --pkg-begin app main.zig --pkg-end ../../bench.zig --enable-cache
     // ./../../zig-cache/path/to/bench zig
-    var benchmarks_it = manifest.Object.iterator();
+    var benchmarks_it = manifest.object.iterator();
     while (benchmarks_it.next()) |entry| {
         const benchmark_name = entry.key_ptr.*;
-        const dir_name = entry.value_ptr.Object.get("dir").?.String;
-        const main_basename = entry.value_ptr.Object.get("mainPath").?.String;
+        const dir_name = entry.value_ptr.object.get("dir").?.string;
+        const main_basename = entry.value_ptr.object.get("mainPath").?.string;
 
         const bench_cwd = try fs.path.join(gpa, &[_][]const u8{ "benchmarks", dir_name });
         defer gpa.free(bench_cwd);
@@ -408,10 +409,7 @@ fn runBenchmarks(
         const main_stdout = try execCapture(gpa, main_argv, .{ .cwd = bench_cwd });
         defer gpa.free(main_stdout);
 
-        var bench_parser = json.Parser.init(gpa, false);
-        defer bench_parser.deinit();
-
-        var main_json = bench_parser.parse(main_stdout) catch |err| {
+        var main_json = json.parseFromSlice(json.Value, gpa, main_stdout, .{}) catch |err| {
             std.debug.print("bad json: {s}\n{s}\n", .{ @errorName(err), main_stdout });
             return error.InvalidBenchJSON;
         };
@@ -419,7 +417,7 @@ fn runBenchmarks(
 
         const record = try jsonToRecord(
             arena,
-            main_json.root,
+            main_json.value,
             timestamp,
             benchmark_name,
             commit,
