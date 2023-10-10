@@ -449,12 +449,7 @@ fn appendBenchBuildArgs(
     try list.ensureUnusedCapacity(20);
 
     const prepend = "app::";
-    // TODO I couldn't figure out how to use std.mem.concat with strings :(
-    var mod_concat = std.ArrayList(u8).init(gpa);
-    try mod_concat.ensureTotalCapacity(prepend.len + main_path.len);
-    mod_concat.appendSliceAssumeCapacity(prepend);
-    mod_concat.appendSliceAssumeCapacity(main_path);
-    const mod = try mod_concat.toOwnedSlice();
+    const mod = try std.mem.concat(gpa, u8, &[_][]const u8{ prepend, main_path });
 
     list.appendSliceAssumeCapacity(&[_][]const u8{
         zig_exe,           "build-exe",
@@ -497,7 +492,7 @@ fn execCapture(
     argv: []const []const u8,
     options: struct { cwd: ?[]const u8 = null },
 ) ![]u8 {
-    //std.debug.print("exec argv[0]={} cwd={}\n", .{argv[0], options.cwd});
+    std.debug.print("exec argv[0]={?s} cwd={?s}\n", .{argv[0], options.cwd});
     var child = std.ChildProcess.init(argv, gpa);
 
     child.stdin_behavior = .Inherit;
@@ -505,11 +500,11 @@ fn execCapture(
     child.stderr_behavior = .Inherit;
     child.cwd = options.cwd;
 
-    //std.debug.print("cwd={}\n", .{child.cwd});
-    //for (argv) |arg| {
-    //    std.debug.print("{} ", .{arg});
-    //}
-    //std.debug.print("\n", .{});
+    std.debug.print("cwd={?s}\n", .{child.cwd});
+    for (argv) |arg| {
+        std.debug.print("{?s} ", .{arg});
+    }
+    std.debug.print("\n", .{});
 
     try child.spawn();
 

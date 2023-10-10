@@ -72,8 +72,8 @@ const Sample = struct {
 
 fn timeval_to_ns(tv: timeval) u64 {
     const ns_per_us = std.time.ns_per_s / std.time.us_per_s;
-    return @bitCast(usize, tv.tv_sec) * std.time.ns_per_s +
-        @bitCast(usize, tv.tv_usec) * ns_per_us;
+    return @as(usize, @bitCast(tv.tv_sec)) * std.time.ns_per_s +
+        @as(usize, @bitCast(tv.tv_usec)) * ns_per_us;
 }
 
 fn readPerfFd(fd: fd_t) usize {
@@ -126,10 +126,10 @@ pub fn bench(options: Options, comptime func: anytype, args: anytype) Results {
         sample_index < samples_buf.len)
     {
         // Set up perf measurements.
-        for (perf_measurements) |measurement, i| {
+        for (perf_measurements, 0..) |measurement, i| {
             var attr: perf_event_attr = .{
                 .type = PERF.TYPE.HARDWARE,
-                .config = @enumToInt(measurement.config),
+                .config = @intFromEnum(measurement.config),
                 .flags = flags,
             };
             perf_fds[i] = perf_event_open(&attr, 0, -1, perf_fds[0], PERF.FLAG.FD_CLOEXEC) catch |err| {
@@ -167,7 +167,7 @@ pub fn bench(options: Options, comptime func: anytype, args: anytype) Results {
             .cache_misses = readPerfFd(perf_fds[3]),
             .branch_misses = readPerfFd(perf_fds[4]),
         };
-        for (perf_measurements) |_, i| {
+        for (perf_measurements, 0..) |_, i| {
             std.os.close(perf_fds[i]);
             perf_fds[i] = -1;
         }
@@ -195,7 +195,7 @@ pub fn bench(options: Options, comptime func: anytype, args: anytype) Results {
             .cache_references = cache_references,
             .cache_misses = cache_misses,
             .branch_misses = branch_misses,
-            .maxrss = @bitCast(usize, final_rusage.maxrss),
+            .maxrss = @as(usize, @bitCast(final_rusage.maxrss)),
         },
     };
 }
@@ -639,7 +639,7 @@ pub fn perf_event_open(
 ) PerfEventOpenError!fd_t {
     const rc = system.perf_event_open(attr, pid, cpu, group_fd, flags);
     switch (std.os.errno(rc)) {
-        .SUCCESS => return @intCast(fd_t, rc),
+        .SUCCESS => return @as(fd_t, @intCast(rc)),
         .@"2BIG" => return error.TooBig,
         .ACCES => return error.PermissionDenied,
         .BADF => unreachable, // group_fd file descriptor is not valid.
@@ -670,10 +670,10 @@ pub const system = struct {
     ) usize {
         return std.os.linux.syscall5(
             .perf_event_open,
-            @ptrToInt(attr),
-            @bitCast(usize, @as(isize, pid)),
-            @bitCast(usize, @as(isize, cpu)),
-            @bitCast(usize, @as(isize, group_fd)),
+            @intFromPtr(attr),
+            @as(usize, @bitCast(@as(isize, pid))),
+            @as(usize, @bitCast(@as(isize, cpu))),
+            @as(usize, @bitCast(@as(isize, group_fd))),
             flags,
         );
     }
